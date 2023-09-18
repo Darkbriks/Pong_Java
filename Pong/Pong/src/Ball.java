@@ -1,25 +1,37 @@
 public class Ball
 {
+    public Window window;
     public Rect rect;
     public Rect leftPaddle, rightPaddle;
 
     public double vx = -100, vy = 75;
 
-    public Ball(Rect rect, Rect leftPaddle, Rect rightPaddle)
+    public Ball(Window window, Rect rect, Rect leftPaddle, Rect rightPaddle)
     {
+        this.window = window;
         this.rect = rect;
         this.leftPaddle = leftPaddle;
         this.rightPaddle = rightPaddle;
+        resetBall();
     }
 
     // Copy constructor
     public Ball(Ball ball)
     {
+        this.window = ball.window;
         this.rect = new Rect(ball.rect.x, ball.rect.y, ball.rect.width, ball.rect.height, ball.rect.color);
         this.leftPaddle = new Rect(ball.leftPaddle.x, ball.leftPaddle.y, ball.leftPaddle.width, ball.leftPaddle.height, ball.leftPaddle.color);
         this.rightPaddle = new Rect(ball.rightPaddle.x, ball.rightPaddle.y, ball.rightPaddle.width, ball.rightPaddle.height, ball.rightPaddle.color);
         this.vx = ball.vx;
         this.vy = ball.vy;
+    }
+
+    private void resetBall()
+    {
+        this.rect.x = (Constants.SCREEN_WIDTH - Constants.BALL_RADIUS) / 2;
+        this.rect.y = (Constants.SCREEN_HEIGHT - Constants.BALL_RADIUS) / 2;
+        this.vx = (Math.random() < 0.5) ? -200 : 200;
+        this.vy = (Math.random() < 0.5) ? -35 : 35;
     }
 
     public int update(double dt, int simulation)
@@ -37,9 +49,8 @@ public class Ball
             // Else if the ball is outside the left paddle's x range and y range, player loses
             else if (this.rect.x <= this.leftPaddle.x)
             {
-                this.rect.x = (Constants.SCREEN_WIDTH - Constants.BALL_RADIUS) / 2;
-                this.rect.y = (Constants.SCREEN_HEIGHT - Constants.BALL_RADIUS) / 2;
-                System.out.println("Player loses!");
+                resetBall();
+                if (simulation == 0) { window.rightScoreInt += 1; }
             }
         }
         else
@@ -53,12 +64,8 @@ public class Ball
             // Else if the ball is outside the right paddle's x range and y range, AI loses
             else if (this.rect.x + this.rect.width >= this.rightPaddle.x + this.rightPaddle.width)
             {
-                this.rect.x = (Constants.SCREEN_WIDTH - Constants.BALL_RADIUS) / 2;
-                this.rect.y = (Constants.SCREEN_HEIGHT - Constants.BALL_RADIUS) / 2;
-                if (simulation == 0)
-                {
-                    
-                }
+                resetBall();
+                if (simulation == 0) { window.leftScoreInt += 1; }
             }
 
             // Return 1 if the ball is in the right paddle's x range (it's for the AI to know when to stop computing)

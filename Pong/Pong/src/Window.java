@@ -32,8 +32,8 @@ public class Window extends JFrame implements Runnable
         ball = new Rect((Constants.SCREEN_WIDTH - Constants.BALL_RADIUS) / 2, (Constants.SCREEN_HEIGHT - Constants.BALL_RADIUS) / 2, Constants.BALL_RADIUS, Constants.BALL_RADIUS, Constants.BALL_COLOR);
 
         playerController = new PlayerController(playerOne, keyListener);
-        ballController = new Ball(ball, playerOne, ai);
-        aiController = new AIController(new PlayerController(ai), ball, ballController, 2);
+        ballController = new Ball(this, ball, playerOne, ai);
+        aiController = new AIController(new PlayerController(ai), ball, ballController, Constants.AI_LEVEL);
 
         leftScore = new Text(leftScoreInt, Constants.TEXT_FONT, Constants.TEXT_COLOR, (float)(Constants.HZ_PADDING + Constants.PADDLE_WIDTH + Constants.TEXT_X_PADDING), (float)(Constants.TOOLBAR_HEIGHT + Constants.TEXT_Y_PADDING));
         rightScore = new Text(rightScoreInt, Constants.TEXT_FONT, Constants.TEXT_COLOR, (float)(Constants.SCREEN_WIDTH - Constants.HZ_PADDING - Constants.PADDLE_WIDTH - Constants.TEXT_X_PADDING - Constants.TEXT_SIZE), (float)(Constants.TOOLBAR_HEIGHT + Constants.TEXT_Y_PADDING));
@@ -49,6 +49,9 @@ public class Window extends JFrame implements Runnable
         playerController.update(dt);
         aiController.update(dt);
         ballController.update(dt, 0);
+
+        leftScore.setText(leftScoreInt);
+        rightScore.setText(rightScoreInt);
     }
 
     public void draw(Graphics g)

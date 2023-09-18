@@ -29,6 +29,7 @@ public class Constants
 
     // AI
     public static final int AI_EPSILON = 40;
+    public static final int AI_LEVEL = 3;
 
     // Text
     public static final int TEXT_SIZE = 20;

@@ -27,7 +27,6 @@ public class Text
         this.y = y;
     }
 
-    public void setText(String text) { this.text = text; }
     public void setText(int text) { this.text = Integer.toString(text); }
 
     public void draw(Graphics2D g2)

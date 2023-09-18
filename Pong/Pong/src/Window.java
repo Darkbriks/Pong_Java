@@ -1,6 +1,5 @@
 import javax.swing.JFrame;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class Window extends JFrame implements Runnable
 {
@@ -82,14 +81,14 @@ public class Window extends JFrame implements Runnable
             update(deltaTime);
 
             // Cap the framerate
-            try
+            /*try
             {
                 Thread.sleep(30);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 }

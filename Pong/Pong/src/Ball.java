@@ -3,7 +3,7 @@ public class Ball
     ///////////////////////////// VARIABLES /////////////////////////////
 
     private final Window window;
-    private Rect leftPaddle, rightPaddle, rect;
+    private final Rect leftPaddle, rightPaddle, rect;
     private double vx, vy;
 
     ///////////////////////////// CONSTRUCTORS /////////////////////////////
@@ -86,13 +86,6 @@ public class Ball
      */
     public void setVY(double vy) { this.vy = vy; }
 
-    // TODO : javadoc
-    public void setRect(Rect rect) { this.rect = rect; }
-
-    public void setLeftPaddle(Rect leftPaddle) { this.leftPaddle = leftPaddle; }
-
-    public void setRightPaddle(Rect rightPaddle) { this.rightPaddle = rightPaddle; }
-
     ///////////////////////////// METHODS /////////////////////////////
 
     /**
@@ -151,8 +144,9 @@ public class Ball
      */
     public int simulateUpdate(double dt)
     {
+        // TODO : Check why the ai comportement is confusing
         // Check bounce on players' paddles
-        /*if (vx < 0)
+        if (vx < 0)
         {
             return 3;
         }
@@ -170,8 +164,8 @@ public class Ball
         // Check bounce on top and bottom walls. If the ball is within the top or bottom walls' y range, teleport to the edge of the screen and bounce
         bounceOnWall();
 
-        this.rect.setX(this.rect.getX() + vx * dt);
-        this.rect.setY(this.rect.getY() + vy * dt);*/
+        //this.rect.setX(this.rect.getX() + vx * dt);
+        //this.rect.setY(this.rect.getY() + vy * dt);
 
         return 0;
     }

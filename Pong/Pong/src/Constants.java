@@ -9,6 +9,13 @@ public class Constants
     public static final boolean SCREEN_RESIZABLE = false;
     public static final boolean SCREEN_VISIBLE = true;
 
+    // Toolbar
+    public static double TOOLBAR_HEIGHT;
+    public static double INSETS_BOTTOM;
+
+    // Padding
+    public static final double HZ_PADDING = 20;
+
     // Paddle
     public static final double PADDLE_WIDTH = 10;
     public static final double PADDLE_HEIGHT = 100;
@@ -22,15 +29,8 @@ public class Constants
     public static final double BALL_SPEED_DECREASE_MULTIPLIER = 0.5;
     public static final int EPSILON = 5;
 
-    // Padding
-    public static final double HZ_PADDING = 20;
-
-    // Toolbar
-    public static double TOOLBAR_HEIGHT;
-    public static double INSETS_BOTTOM;
-
     // AI
-    public static final int AI_EPSILON = 40;
+    public static final int AI_EPSILON = 10;
     public static final int AI_LEVEL = 3;
 
     // Text

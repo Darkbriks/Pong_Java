@@ -1,83 +1,187 @@
 public class Ball
 {
-    public Window window;
-    public Rect rect;
-    public Rect leftPaddle, rightPaddle;
+    ///////////////////////////// VARIABLES /////////////////////////////
 
-    public double vx = -100, vy = 75;
+    private final Window window;
+    private final Rect leftPaddle, rightPaddle, rect;
+    private double vx, vy;
 
-    public Ball(Window window, Rect rect, Rect leftPaddle, Rect rightPaddle)
+    ///////////////////////////// CONSTRUCTORS /////////////////////////////
+
+    /**
+     * Constructor for Ball class
+     * @param window Window object (Window)
+     * @param leftPaddle left paddle (Rect)
+     * @param rightPaddle right paddle (Rect)
+     * @param rect Rect object to represent ball (Rect)
+     */
+    public Ball(Window window, Rect leftPaddle, Rect rightPaddle, Rect rect)
     {
         this.window = window;
-        this.rect = rect;
         this.leftPaddle = leftPaddle;
         this.rightPaddle = rightPaddle;
+        this.rect = rect;
+        this.vx = 0;
+        this.vy = 0;
         resetBall();
     }
 
-    // Copy constructor
+    /**
+     * Copy constructor for Ball class
+     * @param ball Ball object to copy (Ball)
+     */
     public Ball(Ball ball)
     {
         this.window = ball.window;
-        this.rect = new Rect(ball.rect.x, ball.rect.y, ball.rect.width, ball.rect.height, ball.rect.color);
-        this.leftPaddle = new Rect(ball.leftPaddle.x, ball.leftPaddle.y, ball.leftPaddle.width, ball.leftPaddle.height, ball.leftPaddle.color);
-        this.rightPaddle = new Rect(ball.rightPaddle.x, ball.rightPaddle.y, ball.rightPaddle.width, ball.rightPaddle.height, ball.rightPaddle.color);
+        this.leftPaddle = ball.leftPaddle;
+        this.rightPaddle = ball.rightPaddle;
+        this.rect = ball.rect;
         this.vx = ball.vx;
         this.vy = ball.vy;
     }
 
+    ///////////////////////////// GETTERS /////////////////////////////
+
+    /**
+     * Returns rect object representing ball
+     * @return rect object representing ball (Rect)
+     */
+    public Rect getRect() { return this.rect; }
+
+    /**
+     * Returns left paddle
+     * @return left paddle (Rect)
+     */
+    public Rect getLeftPaddle() { return this.leftPaddle; }
+
+    /**
+     * Returns right paddle
+     * @return right paddle (Rect)
+     */
+    public Rect getRightPaddle() { return this.rightPaddle; }
+
+    /**
+     * Returns x-velocity of ball
+     * @return x-velocity of ball (double)
+     */
+    public double getVX() { return this.vx; }
+
+    /**
+     * Returns y-velocity of ball
+     * @return y-velocity of ball (double)
+     */
+    public double getVY() { return this.vy; }
+
+    ///////////////////////////// SETTERS /////////////////////////////
+
+    /**
+     * Sets x-velocity of ball
+     * @param vx x-velocity of ball (double)
+     */
+    public void setVX(double vx) { this.vx = vx; }
+
+    /**
+     * Sets y-velocity of ball
+     * @param vy y-velocity of ball (double)
+     */
+    public void setVY(double vy) { this.vy = vy; }
+
+    ///////////////////////////// METHODS /////////////////////////////
+
+    /**
+     * Resets ball to center of screen and assigns random velocity
+     */
     private void resetBall()
     {
-        this.rect.x = (Constants.SCREEN_WIDTH - Constants.BALL_RADIUS) / 2;
-        this.rect.y = (Constants.SCREEN_HEIGHT - Constants.BALL_RADIUS) / 2;
+        this.rect.setX((Constants.SCREEN_WIDTH - Constants.BALL_RADIUS) / 2);
+        this.rect.setY((Constants.SCREEN_HEIGHT - Constants.BALL_RADIUS) / 2);
         this.vx = (Math.random() < 0.5) ? -200 : 200;
         this.vy = (Math.random() < 0.5) ? -35 : 35;
     }
 
-    public int update(double dt, int simulation)
+    /**
+     * Updates ball position and checks for bounce on paddles and walls
+     * @param dt time since last frame (double)
+     */
+    public void update(double dt)
     {
         // Check bounce on players' paddles
         if (vx < 0)
         {
             // If the ball is within the left paddle's x range and y range, then bounce
-            if (this.rect.x <= this.leftPaddle.x + this.leftPaddle.width && this.rect.x >= this.leftPaddle.x && this.rect.y >= this.leftPaddle.y && this.rect.y <= this.leftPaddle.y + this.leftPaddle.height)
+            if (this.rect.getX() <= this.leftPaddle.getX() + this.leftPaddle.getWidth() && this.rect.getX() >= this.leftPaddle.getX() && this.rect.getY() >= this.leftPaddle.getY() && this.rect.getY() <= this.leftPaddle.getY() + this.leftPaddle.getHeight())
             {
-                vx *= -1;
-                vy = (vy < Constants.EPSILON && vy > -Constants.EPSILON) ? (this.leftPaddle.prevY == this.leftPaddle.y) ? vy : (this.leftPaddle.prevY < this.leftPaddle.y) ? 7.5 : -7.5 : vy;
-                vy *= (this.leftPaddle.prevY == this.leftPaddle.y) ? 1 : (this.leftPaddle.prevY < this.leftPaddle.y) ? (vy > 0) ? Constants.BALL_SPEED_INCREASE_MULTIPLIER : Constants.BALL_SPEED_DECREASE_MULTIPLIER : (vy < 0) ? Constants.BALL_SPEED_INCREASE_MULTIPLIER : Constants.BALL_SPEED_DECREASE_MULTIPLIER;
+                bounceOnPaddle();
             }
             // Else if the ball is outside the left paddle's x range and y range, player loses
-            else if (this.rect.x <= this.leftPaddle.x)
-            {
-                resetBall();
-                if (simulation == 0) { window.rightScoreInt += 1; }
-            }
+            else if (this.rect.getX() <= this.leftPaddle.getX()) { resetBall(); window.rightScoreInt += 1; }
         }
         else
         {
             // If the ball is within the right paddle's x range and y range, then bounce
-            if (this.rect.x + this.rect.width >= this.rightPaddle.x && this.rect.x + this.rect.width <= this.rightPaddle.x + this.rightPaddle.width && this.rect.y >= this.rightPaddle.y && this.rect.y <= this.rightPaddle.y + this.rightPaddle.height)            {
-                vx *= -1;
-                vy = (vy < Constants.EPSILON && vy > -Constants.EPSILON) ? (this.rightPaddle.prevY == this.rightPaddle.y) ? vy : (this.rightPaddle.prevY < this.rightPaddle.y) ? 7.5 : -7.5 : vy;
-                vy *= (this.rightPaddle.prevY == this.rightPaddle.y) ? 1 : (this.rightPaddle.prevY < this.rightPaddle.y) ? (vy > 0) ? Constants.BALL_SPEED_INCREASE_MULTIPLIER : Constants.BALL_SPEED_DECREASE_MULTIPLIER : (vy < 0) ? Constants.BALL_SPEED_INCREASE_MULTIPLIER : Constants.BALL_SPEED_DECREASE_MULTIPLIER;
+            if (this.rect.getX() + this.rect.getWidth() >= this.rightPaddle.getX() && this.rect.getX() + this.rect.getWidth() <= this.rightPaddle.getX() + this.rightPaddle.getWidth() && this.rect.getY() >= this.rightPaddle.getY() && this.rect.getY() <= this.rightPaddle.getY() + this.rightPaddle.getHeight())
+            {
+                bounceOnPaddle();
             }
             // Else if the ball is outside the right paddle's x range and y range, AI loses
-            else if (this.rect.x + this.rect.width >= this.rightPaddle.x + this.rightPaddle.width)
-            {
-                resetBall();
-                if (simulation == 0) { window.leftScoreInt += 1; }
-            }
-
-            // Return 1 if the ball is in the right paddle's x range (it's for the AI to know when to stop computing)
-            if (this.rect.x + this.rect.width >= this.rightPaddle.x && this.rect.x + this.rect.width <= this.rightPaddle.x + this.rightPaddle.width && simulation == 1) { return 1; }
+            else if (this.rect.getX() + this.rect.getWidth() >= this.rightPaddle.getX() + this.rightPaddle.getWidth()) { resetBall(); window.leftScoreInt += 1; }
         }
 
         // Check bounce on top and bottom walls. If the ball is within the top or bottom walls' y range, teleport to the edge of the screen and bounce
-        if (this.rect.y <= Constants.TOOLBAR_HEIGHT || this.rect.y + this.rect.height >= Constants.SCREEN_HEIGHT - Constants.INSETS_BOTTOM) { this.rect.y = (this.rect.y <= Constants.TOOLBAR_HEIGHT) ? Constants.TOOLBAR_HEIGHT : Constants.SCREEN_HEIGHT - Constants.INSETS_BOTTOM - this.rect.height; vy *= -1; }
+        bounceOnWall();
 
-        this.rect.x += vx * dt;
-        this.rect.y += vy * dt;
+        this.rect.setX(this.rect.getX() + vx * dt);
+        this.rect.setY(this.rect.getY() + vy * dt);
+    }
+
+    /**
+     * Updates ball position and checks for bounce on paddles and walls
+     * @param dt time since last frame (double)
+     * @return 0 if not major event
+     *        1 if ball is in right paddle's x range
+     *        2 if ball is in right paddle's x range and y range
+     *        3 if ball moves into left paddle's x range
+     */
+    public int simulateUpdate(double dt)
+    {
+        // Check bounce on players' paddles
+        if (vx < 0)
+        {
+            return 3;
+        }
+        else
+        {
+            // If the ball is within the right paddle's x range and y range, then bounce
+            if (this.rect.getX() + this.rect.getWidth() >= this.rightPaddle.getX() && this.rect.getX() + this.rect.getWidth() <= this.rightPaddle.getX() + this.rightPaddle.getWidth() && this.rect.getY() >= this.rightPaddle.getY() && this.rect.getY() <= this.rightPaddle.getY() + this.rightPaddle.getHeight())
+            {
+                return 2;
+            }
+            // Else if the ball is outside the right paddle's x range and y range, AI loses
+            else if (this.rect.getX() + this.rect.getWidth() >= this.rightPaddle.getX() + this.rightPaddle.getWidth()) { return 1; }
+        }
+
+        // Check bounce on top and bottom walls. If the ball is within the top or bottom walls' y range, teleport to the edge of the screen and bounce
+        bounceOnWall();
+
+        this.rect.setX(this.rect.getX() + vx * dt);
+        this.rect.setY(this.rect.getY() + vy * dt);
 
         return 0;
+    }
+
+    private void bounceOnPaddle()
+    {
+        vx *= -1;
+        vy = (vy < Constants.EPSILON && vy > -Constants.EPSILON) ? (this.leftPaddle.getPrevY() == this.leftPaddle.getY()) ? vy : (this.leftPaddle.getPrevY()  < this.leftPaddle.getY()) ? 7.5 : -7.5 : vy;
+        vy *= (this.leftPaddle.getPrevY()  == this.leftPaddle.getY()) ? 1 : (this.leftPaddle.getPrevY()  < this.leftPaddle.getY()) ? (vy > 0) ? Constants.BALL_SPEED_INCREASE_MULTIPLIER : Constants.BALL_SPEED_DECREASE_MULTIPLIER : (vy < 0) ? Constants.BALL_SPEED_INCREASE_MULTIPLIER : Constants.BALL_SPEED_DECREASE_MULTIPLIER;
+    }
+
+    private void bounceOnWall()
+    {
+        if (this.rect.getY() <= Constants.TOOLBAR_HEIGHT || this.rect.getY() + this.rect.getHeight() >= Constants.SCREEN_HEIGHT - Constants.INSETS_BOTTOM)
+        {
+            this.rect.setY((this.rect.getY() <= Constants.TOOLBAR_HEIGHT) ? Constants.TOOLBAR_HEIGHT : Constants.SCREEN_HEIGHT - Constants.INSETS_BOTTOM - this.rect.getHeight());
+            vy *= -1;
+        }
     }
 }

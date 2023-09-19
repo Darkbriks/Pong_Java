@@ -41,7 +41,7 @@ public class AIController
     public AIController(AIController aiController)
     {
         // TODO: Copy playerController, ball, ballController, difficulty, and position
-        this.playerController = new PlayerController(aiController.playerController.rect);
+        this.playerController = new PlayerController(aiController.playerController.getRect());
         this.ball = new Rect(aiController.ball);
         this.ballController = new Ball(aiController.ballController);
         this.difficulty = aiController.difficulty;
@@ -185,8 +185,8 @@ public class AIController
         double amplitude = (float)Constants.SCREEN_HEIGHT;
         double frequency = 0.1;
         double y = amplitude * Math.sin(2 * Math.PI * frequency * Time.getTimeSeconds()) + (Constants.SCREEN_HEIGHT - Constants.TOOLBAR_HEIGHT - Constants.INSETS_BOTTOM) / 2;
-        if (y < this.playerController.rect.getY()) { this.playerController.moveUp(dt, 0.35); }
-        else if (y > this.playerController.rect.getY()) { this.playerController.moveDown(dt, 0.35); }
+        if (y < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, 0.35); }
+        else if (y > this.playerController.getRect().getY()) { this.playerController.moveDown(dt, 0.35); }
     }
 
     /**
@@ -201,8 +201,8 @@ public class AIController
         // If the paddle is arround the ball's y position, return
         if (position[0] == -1 && position[1] == -1) { return; }
 
-        if (position[1] < this.playerController.rect.getY()) { this.playerController.moveUp(dt, 0.4); }
-        else if (position[1] > this.playerController.rect.getY()) { this.playerController.moveDown(dt, 0.4); }
+        if (position[1] < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, 0.4); }
+        else if (position[1] > this.playerController.getRect().getY()) { this.playerController.moveDown(dt, 0.4); }
     }
 
     /**
@@ -218,13 +218,13 @@ public class AIController
         if (position[0] == -1 && position[1] == -1) { return; }
 
         // Smooth the movement
-        double speedMultiplier = smoothMove(0.25, 0.75, position[1], this.playerController.rect.getY());
+        double speedMultiplier = smoothMove(0.25, 0.75, position[1], this.playerController.getRect().getY());
 
         // If the paddle is arround the ball's y position, return
-        if (this.playerController.rect.getY() + this.playerController.rect.getHeight() / 2 > position[1] - Constants.AI_EPSILON && this.playerController.rect.getY() + this.playerController.rect.getHeight() / 2 < position[1] + Constants.AI_EPSILON) { return; }
+        if (this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 > position[1] - Constants.AI_EPSILON && this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 < position[1] + Constants.AI_EPSILON) { return; }
 
-        if (position[1] < this.playerController.rect.getY()) { this.playerController.moveUp(dt, speedMultiplier); }
-        else if (position[1] > this.playerController.rect.getY()) { this.playerController.moveDown(dt, speedMultiplier); }
+        if (position[1] < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, speedMultiplier); }
+        else if (position[1] > this.playerController.getRect().getY()) { this.playerController.moveDown(dt, speedMultiplier); }
     }
 
     /**
@@ -240,13 +240,13 @@ public class AIController
         if (position[0] == -1 && position[1] == -1) { return; }
 
         // Smooth the movement
-        double speedMultiplier = smoothMove(0, 1, position[1], this.playerController.rect.getY());
+        double speedMultiplier = smoothMove(0, 1, position[1], this.playerController.getRect().getY());
 
         // If the paddle is arround the ball's y position, return
-        if (this.playerController.rect.getY() + this.playerController.rect.getHeight() / 2 > position[1] - Constants.AI_EPSILON && this.playerController.rect.getY() + this.playerController.rect.getHeight() / 2 < position[1] + Constants.AI_EPSILON) { return; }
+        if (this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 > position[1] - Constants.AI_EPSILON && this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 < position[1] + Constants.AI_EPSILON) { return; }
 
-        if (position[1] < this.playerController.rect.getY()) { this.playerController.moveUp(dt, 2); }
-        else if (position[1] > this.playerController.rect.getY()) { this.playerController.moveDown(dt, 2); }
+        if (position[1] < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, 2); }
+        else if (position[1] > this.playerController.getRect().getY()) { this.playerController.moveDown(dt, 2); }
 
         // TODO: Add effects with moving the paddle just before the ball hits
     }

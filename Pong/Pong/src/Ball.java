@@ -3,7 +3,7 @@ public class Ball
     ///////////////////////////// VARIABLES /////////////////////////////
 
     private final Window window;
-    private final Rect leftPaddle, rightPaddle, rect;
+    private Rect leftPaddle, rightPaddle, rect;
     private double vx, vy;
 
     ///////////////////////////// CONSTRUCTORS /////////////////////////////
@@ -86,6 +86,13 @@ public class Ball
      */
     public void setVY(double vy) { this.vy = vy; }
 
+    // TODO : javadoc
+    public void setRect(Rect rect) { this.rect = rect; }
+
+    public void setLeftPaddle(Rect leftPaddle) { this.leftPaddle = leftPaddle; }
+
+    public void setRightPaddle(Rect rightPaddle) { this.rightPaddle = rightPaddle; }
+
     ///////////////////////////// METHODS /////////////////////////////
 
     /**
@@ -114,7 +121,7 @@ public class Ball
                 bounceOnPaddle();
             }
             // Else if the ball is outside the left paddle's x range and y range, player loses
-            else if (this.rect.getX() <= this.leftPaddle.getX()) { resetBall(); window.rightScoreInt += 1; }
+            else if (this.rect.getX() <= this.leftPaddle.getX()) { resetBall(); window.incrementRightScoreInt(); }
         }
         else
         {
@@ -124,7 +131,7 @@ public class Ball
                 bounceOnPaddle();
             }
             // Else if the ball is outside the right paddle's x range and y range, AI loses
-            else if (this.rect.getX() + this.rect.getWidth() >= this.rightPaddle.getX() + this.rightPaddle.getWidth()) { resetBall(); window.leftScoreInt += 1; }
+            else if (this.rect.getX() + this.rect.getWidth() >= this.rightPaddle.getX() + this.rightPaddle.getWidth()) { resetBall(); window.incrementLeftScoreInt(); }
         }
 
         // Check bounce on top and bottom walls. If the ball is within the top or bottom walls' y range, teleport to the edge of the screen and bounce

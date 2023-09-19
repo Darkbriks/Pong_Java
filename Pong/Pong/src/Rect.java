@@ -11,6 +11,18 @@ public class Rect
 
     ///////////////////////////// CONSTRUCTORS /////////////////////////////
 
+    //TODO : javadoc
+    public Rect()
+    {
+        this.x = 0;
+        this.y = 0;
+        this.prevX = 0;
+        this.prevY = 0;
+        this.width = 0;
+        this.height = 0;
+        this.color = Color.WHITE;
+    }
+
     /**
      * Constructor for Rect class
      * @param x x-coordinate of top left corner of rectangle (double)

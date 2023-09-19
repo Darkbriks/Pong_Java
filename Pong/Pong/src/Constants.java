@@ -6,6 +6,8 @@ public class Constants
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
     public static final String SCREEN_TITLE = "Pong";
+    public static final boolean SCREEN_RESIZABLE = false;
+    public static final boolean SCREEN_VISIBLE = true;
 
     // Paddle
     public static final double PADDLE_WIDTH = 10;

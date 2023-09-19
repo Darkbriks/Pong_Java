@@ -126,16 +126,6 @@ public class Window extends JFrame implements Runnable
             lastFrameTime = time;
 
             update(deltaTime);
-
-            // Cap the framerate
-            /*try
-            {
-                Thread.sleep(30);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }*/
         }
     }
 }

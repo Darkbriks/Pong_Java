@@ -198,7 +198,7 @@ public class AIController
         // Predict where the ball will land with 1 iteration and move paddle there
         double[] position = predictPosition(1);
 
-        // If the paddle is arround the ball's y position, return
+        // If the paddle is around the ball's y position, return
         if (position[0] == -1 && position[1] == -1) { return; }
 
         if (position[1] < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, 0.4); }
@@ -214,13 +214,13 @@ public class AIController
         // Predict where the ball will land with 10 iterations and move paddle there
         double[] position = predictPosition(50);
 
-        // If the paddle is arround the ball's y position, return
+        // If the paddle is around the ball's y position, return
         if (position[0] == -1 && position[1] == -1) { return; }
 
         // Smooth the movement
         double speedMultiplier = smoothMove(0.25, 0.75, position[1], this.playerController.getRect().getY());
 
-        // If the paddle is arround the ball's y position, return
+        // If the paddle is around the ball's y position, return
         if (this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 > position[1] - Constants.AI_EPSILON && this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 < position[1] + Constants.AI_EPSILON) { return; }
 
         if (position[1] < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, speedMultiplier); }
@@ -236,13 +236,13 @@ public class AIController
         // Predict where the ball will land with 100 iterations and move paddle there, and add effects with moving the paddle just before the ball hits
         double[] position = predictPosition(1000);
 
-        // If the paddle is arround the ball's y position, return
+        // If the paddle is around the ball's y position, return
         if (position[0] == -1 && position[1] == -1) { return; }
 
         // Smooth the movement
         double speedMultiplier = smoothMove(0, 1, position[1], this.playerController.getRect().getY());
 
-        // If the paddle is arround the ball's y position, return
+        // If the paddle is around the ball's y position, return
         if (this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 > position[1] - Constants.AI_EPSILON && this.playerController.getRect().getY() + this.playerController.getRect().getHeight() / 2 < position[1] + Constants.AI_EPSILON) { return; }
 
         if (position[1] < this.playerController.getRect().getY()) { this.playerController.moveUp(dt, 2); }

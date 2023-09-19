@@ -152,7 +152,7 @@ public class Ball
     public int simulateUpdate(double dt)
     {
         // Check bounce on players' paddles
-        if (vx < 0)
+        /*if (vx < 0)
         {
             return 3;
         }
@@ -171,7 +171,7 @@ public class Ball
         bounceOnWall();
 
         this.rect.setX(this.rect.getX() + vx * dt);
-        this.rect.setY(this.rect.getY() + vy * dt);
+        this.rect.setY(this.rect.getY() + vy * dt);*/
 
         return 0;
     }

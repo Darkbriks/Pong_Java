@@ -8,9 +8,9 @@ public class PlayerController
     private final Rect rect;
     private final KL keyListener;
 
-    /*private boolean speedBoost = false;
+    private boolean speedBoost = false;
     private double speedBoostTime = 0.0;
-    private double speedBoostDisableTime = 0.0;*/
+    private double speedBoostCooldownTime = 0.0;
 
     ///////////////////////////// CONSTRUCTORS /////////////////////////////
 
@@ -26,42 +26,46 @@ public class PlayerController
 
     public KL getKeyListener() { return keyListener; }
 
-    ///////////////////////////// METHODS /////////////////////////////
+    public boolean getSpeedBoost() {return this.speedBoost;}
 
-    /*public boolean getSpeedBoost()
-    {
-        return this.speedBoost;
-    }
+    ///////////////////////////// METHODS /////////////////////////////
 
     private void activateSpeedBoost()
     {
-        if (!this.speedBoost && this.speedBoostDisableTime < 0.0)
+        if (!this.speedBoost && this.speedBoostCooldownTime == 0.0)
         {
             this.speedBoost = true;
-            this.speedBoostTime = Constants.SPEED_BOOST_DURATION;
+            this.speedBoostTime = Constants.SPEED_BOOST_INPUT_THRESHOLD;
         }
-    }*/
+    }
+
+    public void desactivateSpeedBoost()
+    {
+        if (this.speedBoost)
+        {
+            this.speedBoost = false;
+            this.speedBoostTime = 0;
+            this.speedBoostCooldownTime = 0;
+        }
+    }
 
     public void update(double dt)
     {
-        // Update previous position
-        //this.rect.prevX = this.rect.x;
-        //this.rect.prevY = this.rect.y;
-
         if (this.keyListener != null)
         {
             // Move physical player
             if (keyListener.isKeyPressed(KeyEvent.VK_UP)) { moveUp(dt, 1); }
             else if (keyListener.isKeyPressed(KeyEvent.VK_DOWN)) { moveDown(dt, 1); }
+            else if (keyListener.isKeyPressed(KeyEvent.VK_RIGHT)) { this.activateSpeedBoost(); }
         }
 
-        /*// Speed boost
-        if(this.speedBoost)
+        // Speed boost
+        if (this.speedBoost)
         {
-            this.speedBoostTime -= dt;
-            if (this.speedBoostTime <= 0) {this.speedBoost = false; this.speedBoostDisableTime = Constants.SPEED_BOOST_DISABLE_TIME;}
+            this.speedBoostTime = this.clamp(this.speedBoostTime - dt, 0, Constants.SPEED_BOOST_INPUT_THRESHOLD);
+            if (this.speedBoostTime == 0) {this.speedBoost = false; this.speedBoostCooldownTime = Constants.SPEED_BOOST_COOLDOWN;}
         }
-        else if (this.speedBoostDisableTime > 0.0) {this.speedBoostDisableTime -= dt;}*/
+        else if (this.speedBoostCooldownTime > 0.0) {this.speedBoostCooldownTime = this.clamp(this.speedBoostCooldownTime -dt, 0, Constants.SPEED_BOOST_COOLDOWN);}
     }
 
     public void moveUp(double dt, double speedMultiplier)
@@ -78,4 +82,6 @@ public class PlayerController
         //this.rect.y += Constants.PADDLE_SPEED * dt * speedMultiplier;
         this.rect.setY(this.rect.getY() + (Constants.PADDLE_SPEED * dt * speedMultiplier));
     }
+
+    private double clamp(double x, double min, double max) { return (x < min) ? min : Math.min(x, max); }
 }

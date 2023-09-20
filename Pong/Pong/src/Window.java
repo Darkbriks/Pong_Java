@@ -61,6 +61,8 @@ public class Window extends JFrame implements Runnable
 
     public Rect getBall() { return ball; }
 
+    public PlayerController getPlayerController() { return this.playerController; }
+
     public AIController getAiController() { return aiController; }
 
     public Ball getBallController() { return ballController; }

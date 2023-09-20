@@ -41,8 +41,8 @@ public class Constants
     public static final Font TEXT_FONT = new Font("Times New Roman", Font.PLAIN, TEXT_SIZE);
 
     // Speed boost
-    public static final double SPEED_BOOST = 1.5;
-    public static final double SPEED_BOOST_INPUT_THRESHOLD = 2.5; // seconds
-    public static final double SPEED_BOOST_DURATION = 2.5; // seconds
+    public static final double SPEED_BOOST = 10;
+    public static final double SPEED_BOOST_INPUT_THRESHOLD = 0.5; // seconds
+    public static final double SPEED_BOOST_DURATION = 0.4; // seconds
     public static final double SPEED_BOOST_COOLDOWN = 5; // seconds
 }

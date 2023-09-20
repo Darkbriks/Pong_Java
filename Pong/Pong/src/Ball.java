@@ -5,6 +5,7 @@ public class Ball
     private final Window window;
     private final Rect leftPaddle, rightPaddle, rect;
     private double vx, vy;
+    private double speedBoostTime;
 
     ///////////////////////////// CONSTRUCTORS /////////////////////////////
 
@@ -24,6 +25,7 @@ public class Ball
         this.vx = 0;
         this.vy = 0;
         resetBall();
+        this.speedBoostTime = 0;
     }
 
     /**
@@ -38,6 +40,7 @@ public class Ball
         this.rect = ball.rect;
         this.vx = ball.vx;
         this.vy = ball.vy;
+        this.speedBoostTime = ball.speedBoostTime;
     }
 
     ///////////////////////////// GETTERS /////////////////////////////
@@ -112,6 +115,11 @@ public class Ball
             if (this.rect.getX() <= this.leftPaddle.getX() + this.leftPaddle.getWidth() && this.rect.getX() >= this.leftPaddle.getX() && this.rect.getY() >= this.leftPaddle.getY() && this.rect.getY() <= this.leftPaddle.getY() + this.leftPaddle.getHeight())
             {
                 bounceOnPaddle();
+                if (this.window.getPlayerController().getSpeedBoost())
+                {
+                    this.speedBoostTime = Constants.SPEED_BOOST_DURATION;
+                    this.window.getPlayerController().desactivateSpeedBoost();
+                }
             }
             // Else if the ball is outside the left paddle's x range and y range, player loses
             else if (this.rect.getX() <= this.leftPaddle.getX()) { resetBall(); window.incrementRightScoreInt(); }
@@ -130,8 +138,14 @@ public class Ball
         // Check bounce on top and bottom walls. If the ball is within the top or bottom walls' y range, teleport to the edge of the screen and bounce
         bounceOnWall();
 
-        this.rect.setX(this.rect.getX() + vx * dt);
+        this.rect.setX(this.rect.getX() + vx * dt * ((speedBoostTime > 0) ? Constants.SPEED_BOOST : 1));
         this.rect.setY(this.rect.getY() + vy * dt);
+
+        if (this.speedBoostTime > 0)
+        {
+            speedBoostTime -= dt;
+            if (this.speedBoostTime < 0) { speedBoostTime = 0; }
+        }
     }
 
     /**
